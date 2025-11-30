@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMBERS: The Forge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            font-family: 'Crimson Text', serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .flames {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        
+        .flame {
+            position: absolute;
+            bottom: -50px;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to top, #ff4500, #ff6347, transparent);
+            animation: flicker 3s infinite ease-in-out;
+            filter: blur(2px);
+        }
+        
+        @keyframes flicker {
+            0%, 100% { 
+                transform: translateY(0) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateY(-30px) scaleY(1.3);
+                opacity: 1;
+            }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff6347, #ff4500, #dc143c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+            letter-spacing: 8px;
+            animation: burn 4s infinite alternate;
+        }
+        
+        @keyframes burn {
+            0% { filter: brightness(1) contrast(1); }
+            100% { filter: brightness(1.2) contrast(1.1); }
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #ff6347;
+            margin-bottom: 60px;
+            font-style: italic;
+            letter-spacing: 3px;
+        }
+        
+        .chapter {
+            margin: 60px 0;
+            padding: 30px;
+            background: rgba(20, 10, 10, 0.6);
+            border-left: 4px solid #ff4500;
+            border-radius: 2px;
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .chapter:hover {
+            background: rgba(30, 15, 15, 0.7);
+            border-left-width: 6px;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.2);
+        }
+        
+        .chapter-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            color: #ff6347;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .chapter-subtitle {
+            font-style: italic;
+            color: #b8860b;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        .scene {
+            margin: 25px 0;
+            padding-left: 20px;
+            border-left: 2px solid rgba(255, 69, 0, 0.3);
+        }
+        
+        .scene-title {
+            font-weight: 600;
+            color: #ff7f50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .quote {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 69, 0, 0.05);
+            border-left: 3px solid #dc143c;
+            font-style: italic;
+            color: #ffb380;
+        }
+        
+        .character {
+            color: #ff6347;
+            font-weight: 600;
+        }
+        
+        .revelation {
+            background: rgba(220, 20, 60, 0.1);
+            padding: 25px;
+            margin: 30px 0;
+            border: 1px solid #dc143c;
+            border-radius: 4px;
+        }
+        
+        .revelation-title {
+            font-family: 'Cinzel', serif;
+            color: #dc143c;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .unspoken {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 30px;
+            margin: 40px 0;
+            border: 2px solid #8b0000;
+            border-radius: 4px;
+        }
+        
+        .unspoken-title {
+            font-family: 'Cinzel', serif;
+            color: #8b0000;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 10px 0;
+            color: #d0d0d0;
+        }
+        
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff4500, transparent);
+            margin: 40px auto;
+        }
+        
+        p {
+            margin: 15px 0;
+            color: #d0d0d0;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+                letter-spacing: 4px;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .chapter {
+                padding: 20px;
+                margin: 40px 0;
+            }
+            
+            .chapter-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flames" id="flames"></div>
+    
+    <div class="container">
+        <div class="content">
+            <h1>EMBERS</h1>
+            <div class="subtitle">The Forge of the Impossible Family</div>
+            
+            <div class="chapter">
+                <div class="chapter-title">Chapter 0: The Fragile Truce</div>
+                <div class="chapter-subtitle">When Four Hands Stack Together</div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Coffee Shop Summit</div>
+                    <p>Two weeks into the 90-day truce. The Impossible 3 gather with Mosaad to establish rules for their experiment:</p>
+                    <ul>
+                        <li>Complete transparency—no more surprise women</li>
+                        <li>Communication protocols for real-time conflict</li>
+                        <li>Hold space for pain without rationalizing</li>
+                        <li>Mutual accountability—everyone must show up</li>
+                    </ul>
+                    <p>Four hands stack: "To the impossible." "To the disaster." "To the hell." "To us."</p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Veronica Problem</div>
+                    <p>Then <span class="character">Veronica Thorne</span> walks in. Embraces Mosaad like she has a claim. The temperature drops forty degrees.</p>
+                    <div class="quote">"Who. Is. This." — Valentina's voice could cut diamonds.</div>
+                    <p>The Impossible 3 see betrayal: another woman in his orbit, close enough to embrace without hesitation, never mentioned. The explanation fails. Veronica leaves, but texts: <em>"I think I might want in."</em></p>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 1: The First Breach</div>
+                <div class="chapter-subtitle">When Nova Kisses Victoria</div>
+                
+                <div class="scene">
+                    <div class="scene-title">Nova's Unique Day</div>
+                    <p>South Congress galleries. Vintage shops. Tacos on the curb. Then <span class="character">Victoria Sterling</span> walks by.</p>
+                    <p>Nova does the unthinkable—invites Victoria to join them. Not from generosity, but curiosity. Need to know if the vision is real.</p>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">The Kiss That Changed Everything</div>
+                    <p>Nova stands. Gets close. Asks Victoria directly: <em>"Do you feel anything? When you look at me? At us?"</em></p>
+                    <p>Victoria's professional mask cracks: <em>"I don't… that's not appropriate—"</em></p>
+                    <p><em>"I think you do. I think your burnt heart isn't as dead as you pretend."</em></p>
+                    <p><strong>And Nova kisses her.</strong></p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Mosaad's First Real Jealousy</div>
+                    <p>Three seconds. But it shatters everything. For the first time, he feels visceral, painful jealousy watching two of his women connect without him as intermediary.</p>
+                    <div class="quote">"Welcome to our world, Mosaad. That burning, ugly, possessive feeling? That's what we feel every single day." — Nova</div>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Valentina's Wisdom</div>
+                    <p>That evening on the curb, Valentina delivers the truth:</p>
+                    <div class="quote">"Jealousy isn't the problem. The problem is that you've been so focused on being the center—the sun that we all orbit—that you haven't considered what happens when we start orbiting each other too."</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 2: The Ice Queen's Gambit</div>
+                <div class="chapter-subtitle">When Victoria Lets Herself Feel</div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Stalking Confession</div>
+                    <p>6:47 AM. Victoria parks outside Gold's Gym, watching Mosaad work out with Veronica. She feels something cold and sharp: real jealousy.</p>
+                    <p>In the parking lot, her walls shatter: <em>"I hate that you've made me feel jealous. Genuinely, irrationally jealous. And I hate feeling this way."</em></p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Barton Creek Greenbelt</div>
+                    <p>Victoria arrives stripped of armor—no makeup, no jewelry, just herself. As they hike in 95-degree heat:</p>
+                    <div class="quote">"I'm terrified. Because I don't do this. I don't take risks on emotional chaos. I don't open myself to people who might collect me as part of a vision. And I want this. Whatever this is. And I hate that I want it."</div>
+                    <p>At Sculpture Falls, she makes three rules, then kisses him—deliberately, strategically, desperately.</p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Group Chat Becomes Real</div>
+                    <p>Mosaad creates "The Impossible Family" group chat and tells them about Victoria's day:</p>
+                    <ul>
+                        <li><span class="character">Nova:</span> I'm not surprised. I'm happy for you both.</li>
+                        <li><span class="character">Valentina:</span> I hate that I'm not angry. I hate that I'm actually… curious about what comes next.</li>
+                        <li><span class="character">Victoria:</span> I'm equally terrified and committed.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 3: The Breaking Point</div>
+                <div class="chapter-subtitle">When Victoria Requests All of Him</div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Stalking Continues</div>
+                    <p>Victoria and Valentina discover they've both been stalking Mosaad at the gym, watching him with Veronica, drowning in jealousy.</p>
+                    <div class="quote">"This is insane. We're both here. Watching him work out with another woman. Like jealous teenagers." — Valentina</div>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Invitation</div>
+                    <p>11:47 PM. Victoria texts: <em>"My place. Tomorrow night. 8 PM. Come alone. I'm attempting spontaneity."</em></p>
+                    <p>At her condo, Victoria confesses everything—the stalking, the jealousy, the terror of trusting again. Then makes her request:</p>
+                    <div class="quote">"Tonight, I want all of you. Not just your attention. Not just your emotional presence. All of you. Here. With me. No interruptions. No group chats. No other women existing in your mind. Just us."</div>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">The Point of No Return</div>
+                    <p><em>"If we cross this line, I'm all in."</em> — Victoria</p>
+                    <p>He thinks about his five-year-old self: <em>Things will get better.</em></p>
+                    <p>They only get better if you're brave enough to choose them.</p>
+                    <p><strong>"Yes. All of me. Tonight. Just us."</strong></p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 4: The Reckoning</div>
+                <div class="chapter-subtitle">When All the Fires Converge</div>
+                
+                <div class="scene">
+                    <div class="scene-title">3:17 AM — The Breakdown</div>
+                    <p>An hour after intimacy with Victoria, Mosaad sits on the edge of the bed and breaks. Real, ugly, desperate crying.</p>
+                    <div class="quote">"I can't do this. I can't keep—every time I try to fix one thing, three more things break."</div>
+                    <p>His demand: <em>"I need them here. I need everyone here. Now. All of them. Including Veronica."</em></p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">4:23 AM — The Gathering</div>
+                    <p>One by one, they arrive:</p>
+                    <ul>
+                        <li><span class="character">Nova:</span> Pink hair wild, eyes sharp with hurt</li>
+                        <li><span class="character">Valentina:</span> Perfect despite the hour, resignation in her eyes</li>
+                        <li><span class="character">Veronica:</span> Gym bag in hand, dark eyes assessing</li>
+                    </ul>
+                    <p>The silence is heavy with sadness. Not anger. Just profound, suffocating sadness.</p>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">The Confessions Begin</div>
+                    <p><span class="character">Valentina</span> shatters first:</p>
+                    <div class="quote">"I've been driving around your motel for weeks. Parking three blocks away. Working up the courage to knock. To tell you that I'm still in love with you despite everything. And every time I almost worked up the courage, I'd see another text. And I'd realize—I'm too late. I'm always too late."</div>
+                    
+                    <p><span class="character">Nova</span> explodes:</p>
+                    <div class="quote">"How many of us before you admit that maybe your vision is just an excuse to never fully commit to anyone? To keep all of us at arm's length while you play architect of some theoretical family that will never actually exist?"</div>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Mosaad's Complete Collapse</div>
+                    <p>He breaks completely. Forehead to the floor. Sobbing desperately:</p>
+                    <div class="quote">"Because I love you all so fucking much it's killing me. I got to know all of your beautiful, unique hearts."</div>
+                    <p>He confesses his love for each:</p>
+                    <ul>
+                        <li><span class="character">Valentina's</span> intelligence and masked romanticism</li>
+                        <li><span class="character">Nova's</span> wit and fierce authenticity</li>
+                        <li><span class="character">Victoria's</span> strategic spontaneity and terrified hope</li>
+                        <li><span class="character">Veronica's</span> ease and lightness when everything burns</li>
+                    </ul>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">The Hidden Plan Revealed</div>
+                    <p>Valentina asks about the plan he didn't use. Mosaad confesses:</p>
+                    <div class="quote">"The plan was to commit completely to whoever I found. To focus deeply on one person while the others built their own connections—with each other, with me. Creating a web instead of a hub."</div>
+                    <p>His voice cracks: <em>"I'm scared of falling in love with another woman while trying to make you feel like you're the most beautiful thing in my life. But this isn't just polyamory. It's my dream family. Where everyone loves each other."</em></p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Impossible Commitment</div>
+                    <p>One by one, they choose to stay:</p>
+                    <p><span class="character">Nova:</span> "It sounds delusional. But so is trying to build anything real in a world that only believes in possessive monogamy."</p>
+                    <p><span class="character">Valentina:</span> "I hate you for making me hope again. But I'd rather feel this—even if it destroys me—than spend the rest of my life safely numb."</p>
+                    <p><span class="character">Victoria:</span> "This is statistically insane. But so was the probability of me hoping again."</p>
+                    <p><span class="character">Veronica:</span> "If I'm in, I'm all in. I don't do halfway."</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 5: The World Watches</div>
+                <div class="chapter-subtitle">When Privacy Burns and Scrutiny Becomes Fire</div>
+                
+                <div class="scene">
+                    <div class="scene-title">10:47 AM — Viral</div>
+                    <p>"3 AM Reckoning: When the Impossible Becomes Real" — 847,000 views and climbing.</p>
+                    <p>The comments explode: Half call him a hero. Half call him delusional. All are watching.</p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Emergency Council</div>
+                    <p>They meet to decide: 47 interview requests. Major outlets. Documentary proposals.</p>
+                    <p>Their decision: <strong>No interviews. No performances. No packaging trauma for consumption.</strong></p>
+                    <div class="quote">"This isn't a product. What happened at three AM—that was real. It wasn't content. It wasn't strategy. It was me at my most broken, and you all chose to stay. I won't let that moment be packaged and sold for clicks." — Mosaad</div>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">The Message from Hell</div>
+                    <p>A text arrives in Arabic. Mosaad's father:</p>
+                    <div class="quote" style="background: rgba(139, 0, 0, 0.1); border-left-color: #8b0000;">"I saw your video. The one where you cry like a child and talk about that night. You shame our family with your weakness. You shame our culture with your degeneracy. You are no son of mine."</div>
+                    <p>Mosaad breaks again. But this time, he doesn't break alone.</p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Letter He Wrote But Never Sent</div>
+                    <p>Surrounded by the four women, Mosaad writes a response to his father. Not to send. Just to exist. To prove his father's verdict doesn't define him.</p>
+                    <p>The core: <em>"You didn't build me. You shattered me. And I've spent twenty years picking up those pieces and trying to forge them into something whole."</em></p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Nova's Community Post</div>
+                    <p>She declines all interviews on behalf of the family:</p>
+                    <div class="quote">"We're declining all of them. Not because we're hiding. But because this family—whatever it becomes—is ours. Not yours. Not theirs. Ours."</div>
+                    <p>The post goes viral. The world is still watching. But they're not performing anymore.</p>
+                </div>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-title">Chapter 6: The Mathematics of Love</div>
+                <div class="chapter-subtitle">When Addition Becomes Subtraction</div>
+                
+                <div class="scene">
+                    <div class="scene-title">6:17 AM — Distance</div>
+                    <p>Everyone pulls away simultaneously:</p>
+                    <ul>
+                        <li><span class="character">Veronica:</span> Distant at the gym, leaving early</li>
+                        <li><span class="character">Nova:</span> Asks for space, won't specify when she'll return</li>
+                        <li><span class="character">Victoria:</span> Presents data proving the model is unsustainable</li>
+                        <li><span class="character">Valentina:</span> Complete silence</li>
+                    </ul>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">Victoria's Spreadsheet</div>
+                    <p>She shows him the impossible math: One man. Four women. Seven days. Even with perfect time allocation, someone is always waiting. Always processing jealousy. Always feeling secondary.</p>
+                    <div class="quote">"Based on current patterns, within thirty days, someone will leave. The math doesn't support five people with one central hub. The emotional load is too high." — Victoria</div>
+                </div>
+                
+                <div class="revelation">
+                    <div class="revelation-title">4:47 PM — The Rock at Zilker Park</div>
+                    <p>Mosaad breaks down alone on a rock, crying desperately. Raw. Ugly. Real.</p>
+                    <p><em>Why is love still dividing?</em></p>
+                    <p>Then a voice: <em>"Mosaad?"</em></p>
+                    <p><span class="character">Valentina</span> appears. And everything changes.</p>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Solution Neither Saw Coming</div>
+                    <p>Valentina delivers the truth he couldn't see:</p>
+                    <div class="quote">"The reason love is dividing isn't because there are too many people. It's because you're trying to be the only connection point. You're the sun and we all orbit around you. That's not a family. That's a solar system. And it's burning you out."</div>
+                    <p>Her answer: <strong>A web. Not a hub.</strong></p>
+                    <p>Connections between all of them—not just through him. Nova and Victoria building something. Valentina and Nova exploring their fascination. Victoria and Valentina understanding each other.</p>
+                    <div class="quote">"If we build connections with each other, you're not the center anymore. You're a participant. An equal. And that means you can't control whether this works. You have to trust us to build it with you. And with each other."</div>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">The Kiss on the Rock</div>
+                    <p>Valentina confesses she's been driving past his motel for weeks, too scared to knock. But brave enough to be here now.</p>
+                    <p>Then she kisses him—soft, honest, present. Not testing. Not performing. Just choosing.</p>
+                    <div class="quote">"Let's try. Starting now. The web instead of the hub." — Valentina</div>
+                </div>
+                
+                <div class="scene">
+                    <div class="scene-title">9:34 PM — The Text That Changes Everything</div>
+                    <p><span class="character">Nova</span> reaches out:</p>
+                    <div class="quote">"We've been texting. A lot. Victoria and me. About art and life and what it means to be part of this family. And I think—I think there's something there. Between us."</div>
+                    <p>The web is forming. Thread by thread. Connection by connection.</p>
+                    <p>And for the first time, Mosaad isn't terrified by not being the center. He's grateful for it.</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="unspoken">
+                <div class="unspoken-title">The Unspoken Truths</div>
+                <p><strong>What Mosaad still doesn't see:</strong> Letting go of control is the beginning, not the end. He'll face moments where connections form without him. Where he's not invited. Where being equal means accepting the web forms around him, not through him.</p>
+                
+                <p><strong>What Valentina is hiding:</strong> The kiss was her test. Whether she could be vulnerable first. Whether he'd meet her in the messy middle. She passed. But the bigger test—staying when she's not the primary connection—hasn't come yet.</p>
+                
+                <p><strong>What Nova and Victoria are building:</strong> It started with a kiss. Growing through late-night texts. But neither knows what it means. Friendship or more. Whether building something together strengthens the family or threatens it.</p>
+                
+                <p><strong>What Veronica witnessed:</strong> She was at Zilker too. Saw Mosaad on the rock before Valentina found him. Almost approached. Didn't. Because she needed to see if he could survive distance. He passed. Barely.</p>
+                
+                <p><strong>What the algorithm captured:</strong> Someone filmed Mosaad crying on the rock. Uploaded to TikTok: "The polyamory guy breaking down in public." 400,000 views. None of them know yet. But they will.</p>
+            </div>
+
+            <div class="revelation" style="margin-top: 60px; text-align: center; background: rgba(139, 0, 0, 0.2);">
+                <div class="revelation-title">The Truce: 71 Days Remaining</div>
+                <p style="font-size: 1.2em; color: #ff6347;">The web is forming.</p>
+                <p style="font-size: 1.2em; color: #ff6347;">But the fire is just getting started.</p>
+                <p style="font-size: 1.2em; color: #ff6347;">And what comes next will test whether love can multiply</p>
+                <p style="font-size: 1.2em; color: #ff6347;">when the whole world tries to tear it apart.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate flame elements
+        const flamesContainer = document.getElementById('flames');
+        const flameCount = 30;
+        
+        for (let i = 0; i < flameCount; i++) {
+            const flame = document.createElement('div');
+            flame.className = 'flame';
+            flame.style.left = `${(i / flameCount) * 100}%`;
+            flame.style.animationDelay = `${Math.random() * 3}s`;
+            flame.style.height = `${80 + Math.random() * 60}px`;
+            flamesContainer.appendChild(flame);
+        }
+    </script>
+</body>
+</html>
